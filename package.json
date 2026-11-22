@@ -1,0 +1,33 @@
+{
+  "name": "sallora",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Sallora: a live table board for waiters and a nightly report for the owner, from the cameras a café already has.",
+  "type": "module",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "dev": "concurrently --kill-others --names backend,frontend --prefix-colors blue,yellow \"npm run dev -w backend\" \"npm run dev -w frontend\"",
+    "db:migrate": "npm run db:migrate -w backend",
+    "db:generate": "npm run db:generate -w backend --",
+    "db:diagram": "npm run db:diagram -w backend",
+    "db:studio": "npm run db:studio -w backend",
+    "test": "npm test -w backend",
+    "typecheck": "npm run typecheck --workspaces",
+    "lint": "npm run lint -w frontend",
+    "build": "npm run build --workspaces"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.7"
+  },
+  "overrides": {
+    "@esbuild-kit/core-utils": {
+      "esbuild": "^0.25.12"
+    }
+  }
+}

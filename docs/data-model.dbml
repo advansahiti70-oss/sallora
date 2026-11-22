@@ -1,0 +1,359 @@
+// Sallora data model (v1). Generated from backend/src/db/schema.ts by `npm run db:diagram`. Do not edit by hand.
+// Paste this file into https://dbdiagram.io to see the diagram and move the tables around.
+
+Project sallora {
+  database_type: 'SQLite'
+}
+
+Table venues {
+  id integer [pk]
+  name text [not null]
+  city text [not null]
+  country text [not null, note: 'XK | MK']
+  timezone text [not null, default: 'Europe/Belgrade']
+  status text [not null, default: 'setup', note: 'setup | live']
+  live_since timestamp
+  waiting_threshold_min integer [not null, default: 5]
+  clearing_threshold_min integer [not null, default: 3]
+  created_at timestamp [not null, default: `now`]
+}
+
+Table users {
+  id integer [pk]
+  name text [not null]
+  email text [unique]
+  phone text [unique]
+  password_hash text [not null]
+  language text [not null, default: 'sq', note: 'sq | mk | en']
+  created_at timestamp [not null, default: `now`]
+}
+
+Table venue_members {
+  id integer [pk]
+  venue_id integer [not null]
+  user_id integer [not null]
+  role text [not null, note: 'owner | manager | waiter | installer | support']
+  wants_escalations boolean [not null, default: false]
+  wants_reports boolean [not null, default: false]
+  created_at timestamp [not null, default: `now`]
+
+  indexes {
+    (venue_id, user_id) [unique]
+  }
+}
+
+Table invites {
+  id integer [pk]
+  venue_id integer [not null]
+  role text [not null, note: 'owner | manager | waiter | installer | support']
+  email text
+  phone text
+  token_hash text [not null, unique]
+  invited_by integer
+  expires_at timestamp [not null]
+  accepted_at timestamp
+  created_at timestamp [not null, default: `now`]
+}
+
+Table consents {
+  id integer [pk]
+  venue_id integer [not null]
+  user_id integer
+  kind text [not null, note: 'terms | data_processing | privacy_checklist']
+  version text [not null]
+  accepted_at timestamp [not null, default: `now`]
+
+  indexes {
+    (venue_id, kind, version) [unique]
+  }
+}
+
+Table access_windows {
+  id integer [pk]
+  venue_id integer [not null]
+  kind text [not null, note: 'setup | support']
+  granted_by integer
+  starts_at timestamp [not null, default: `now`]
+  ends_at timestamp [not null]
+  closed_at timestamp
+}
+
+Table boxes {
+  id integer [pk]
+  venue_id integer
+  serial text [not null, unique]
+  token_hash text [unique]
+  software_version text
+  last_seen_at timestamp
+  installed_at timestamp
+  returned_at timestamp
+  created_at timestamp [not null, default: `now`]
+}
+
+Table cameras {
+  id integer [pk]
+  venue_id integer [not null]
+  box_id integer
+  name text [not null]
+  last_frame_at timestamp
+  created_at timestamp [not null, default: `now`]
+
+  indexes {
+    (venue_id, name) [unique]
+  }
+}
+
+Table snapshots {
+  id integer [pk]
+  camera_id integer [not null]
+  file_path text [not null]
+  is_blurred boolean [not null, default: false]
+  taken_at timestamp [not null, default: `now`]
+}
+
+Table zones {
+  id integer [pk]
+  table_id integer [not null]
+  camera_id integer [not null]
+  polygon json [not null]
+  source text [not null, note: 'claude | manual']
+  created_at timestamp [not null, default: `now`]
+
+  indexes {
+    (table_id, camera_id) [unique]
+  }
+}
+
+Table dining_tables {
+  id integer [pk]
+  venue_id integer [not null]
+  section_id integer
+  number integer [not null]
+  marked_as text [note: 'reserved | closed']
+  state text [not null, default: 'free', note: 'free | seated | waiting | needs_clearing | offline']
+  state_since timestamp
+  last_visit_at timestamp
+  created_at timestamp [not null, default: `now`]
+
+  indexes {
+    (venue_id, number) [unique]
+  }
+}
+
+Table sections {
+  id integer [pk]
+  venue_id integer [not null]
+  name text [not null]
+  created_at timestamp [not null, default: `now`]
+
+  indexes {
+    (venue_id, name) [unique]
+  }
+}
+
+Table outages {
+  id integer [pk]
+  venue_id integer [not null]
+  box_id integer
+  camera_id integer
+  started_at timestamp [not null]
+  ended_at timestamp
+  push_sent_at timestamp
+  sms_sent_at timestamp
+}
+
+Table table_events {
+  id integer [pk]
+  venue_id integer [not null]
+  table_id integer [not null]
+  kind text [not null, note: 'state | visit']
+  state text [note: 'free | seated | waiting | needs_clearing | offline']
+  people_count integer
+  source text [not null, note: 'box | tap']
+  occurred_at timestamp [not null]
+}
+
+Table alerts {
+  id integer [pk]
+  venue_id integer [not null]
+  table_id integer [not null]
+  kind text [not null, note: 'waiting | needs_clearing']
+  opened_at timestamp [not null, default: `now`]
+  escalated_at timestamp
+  resolved_at timestamp
+  resolution text [note: 'tap | seen | expired']
+}
+
+Table shifts {
+  id integer [pk]
+  venue_id integer [not null]
+  starts_at timestamp [not null]
+  ends_at timestamp [not null]
+  manager_on_duty_id integer
+  created_at timestamp [not null, default: `now`]
+}
+
+Table shift_assignments {
+  id integer [pk]
+  shift_id integer [not null]
+  user_id integer [not null]
+  section_id integer
+
+  indexes {
+    (shift_id, user_id, section_id) [unique]
+  }
+}
+
+Table service_hours {
+  id integer [pk]
+  venue_id integer [not null]
+  weekday integer [not null]
+  opens_at text [not null]
+  closes_at text [not null]
+
+  indexes {
+    (venue_id, weekday, opens_at) [unique]
+  }
+}
+
+Table push_subscriptions {
+  id integer [pk]
+  user_id integer [not null]
+  endpoint text [not null, unique]
+  p256dh text [not null]
+  auth text [not null]
+  created_at timestamp [not null, default: `now`]
+}
+
+Table reports {
+  id integer [pk]
+  venue_id integer [not null]
+  kind text [not null, note: 'nightly | weekly | pilot | monthly']
+  period_start timestamp [not null]
+  period_end timestamp [not null]
+  stats json [not null]
+  language text [not null, note: 'sq | mk | en']
+  body text
+  model text
+  created_at timestamp [not null, default: `now`]
+  sent_at timestamp
+
+  indexes {
+    (venue_id, kind, period_start) [unique]
+  }
+}
+
+Table questions {
+  id integer [pk]
+  venue_id integer [not null]
+  asked_by integer
+  question text [not null]
+  answer text
+  model text
+  created_at timestamp [not null, default: `now`]
+}
+
+Table subscriptions {
+  id integer [pk]
+  venue_id integer [not null, unique]
+  status text [not null, default: 'pilot', note: 'pilot | active | past_due | suspended | cancelled']
+  plan text [note: 'monthly | yearly']
+  price_cents integer
+  is_founding boolean [not null, default: false]
+  extra_cameras integer [not null, default: 0]
+  payment_method text [note: 'card | bank_transfer']
+  pilot_started_at timestamp
+  current_period_end timestamp
+  cancelled_at timestamp
+  ends_at timestamp
+  created_at timestamp [not null, default: `now`]
+}
+
+Table invoices {
+  id integer [pk]
+  venue_id integer
+  number text [not null, unique]
+  billed_to text [not null]
+  lines json [not null]
+  total_cents integer [not null]
+  currency text [not null, default: 'EUR']
+  status text [not null, default: 'open', note: 'open | paid | failed | void']
+  issued_at timestamp [not null, default: `now`]
+  due_at timestamp [not null]
+  paid_at timestamp
+}
+
+Ref: venue_members.venue_id > venues.id [delete: cascade]
+Ref: venue_members.user_id > users.id [delete: cascade]
+Ref: invites.venue_id > venues.id [delete: cascade]
+Ref: invites.invited_by > users.id [delete: set null]
+Ref: consents.venue_id > venues.id [delete: cascade]
+Ref: consents.user_id > users.id [delete: set null]
+Ref: access_windows.venue_id > venues.id [delete: cascade]
+Ref: access_windows.granted_by > users.id [delete: set null]
+Ref: boxes.venue_id > venues.id [delete: set null]
+Ref: cameras.venue_id > venues.id [delete: cascade]
+Ref: cameras.box_id > boxes.id [delete: set null]
+Ref: snapshots.camera_id > cameras.id [delete: cascade]
+Ref: zones.table_id > dining_tables.id [delete: cascade]
+Ref: zones.camera_id > cameras.id [delete: cascade]
+Ref: dining_tables.venue_id > venues.id [delete: cascade]
+Ref: dining_tables.section_id > sections.id [delete: set null]
+Ref: sections.venue_id > venues.id [delete: cascade]
+Ref: outages.venue_id > venues.id [delete: cascade]
+Ref: outages.box_id > boxes.id [delete: cascade]
+Ref: outages.camera_id > cameras.id [delete: cascade]
+Ref: table_events.venue_id > venues.id [delete: cascade]
+Ref: table_events.table_id > dining_tables.id [delete: cascade]
+Ref: alerts.venue_id > venues.id [delete: cascade]
+Ref: alerts.table_id > dining_tables.id [delete: cascade]
+Ref: shifts.venue_id > venues.id [delete: cascade]
+Ref: shifts.manager_on_duty_id > users.id [delete: set null]
+Ref: shift_assignments.shift_id > shifts.id [delete: cascade]
+Ref: shift_assignments.user_id > users.id [delete: cascade]
+Ref: shift_assignments.section_id > sections.id [delete: set null]
+Ref: service_hours.venue_id > venues.id [delete: cascade]
+Ref: push_subscriptions.user_id > users.id [delete: cascade]
+Ref: reports.venue_id > venues.id [delete: cascade]
+Ref: questions.venue_id > venues.id [delete: cascade]
+Ref: questions.asked_by > users.id [delete: set null]
+Ref: subscriptions.venue_id - venues.id [delete: cascade]
+Ref: invoices.venue_id > venues.id [delete: set null]
+
+TableGroup venue_and_people {
+  venues
+  users
+  venue_members
+  invites
+  consents
+  access_windows
+}
+
+TableGroup devices_and_floor_map {
+  boxes
+  cameras
+  snapshots
+  zones
+  dining_tables
+  sections
+}
+
+TableGroup service {
+  outages
+  table_events
+  alerts
+  shifts
+  shift_assignments
+  service_hours
+  push_subscriptions
+}
+
+TableGroup reports_and_ai {
+  reports
+  questions
+}
+
+TableGroup billing {
+  subscriptions
+  invoices
+}

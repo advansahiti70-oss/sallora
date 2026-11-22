@@ -15,3 +15,12 @@ __pycache__/
 Thumbs.db
 .vscode/
 .idea/
+
+# SQLite database: one local file made by `npm run db:migrate`, never committed
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+
+# TypeScript build info
+*.tsbuildinfo

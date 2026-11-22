@@ -1,0 +1,18 @@
+/*
+ * Brand tokens, copied from docs/brand-book.md. Use only these colours; never hard-code others.
+ * Tints are mixed from them, e.g. color-mix(in srgb, var(--ink) 10%, var(--crema)).
+ * Saffron is the signal: never for text or thin lines on light backgrounds (1.9:1 on Crema).
+ * The status colours are for the live table board only, always on Ink, with a word and a timer.
+ */
+:root {
+  --ink: #172033;
+  --crema: #FAF5EC;
+  --saffron: #F5A524;
+  --status-free: #22A06B;
+  --status-seated: #4C7DF0;
+  --status-waiting: #E5484D;
+  --status-clear: #F5A524;
+  --status-offline: #8A93A6;
+  --font-sans: "Manrope", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", Consolas, monospace;
+}
