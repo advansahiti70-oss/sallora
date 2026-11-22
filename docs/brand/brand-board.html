@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1600">
+<title>Sallora brand board</title>
+<!-- One-page brand board (source). Rendered to brand-board.png. Open in any browser. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #172033; --crema: #FAF5EC; --saffron: #F5A524;
+    --free: #22A06B; --seated: #4C7DF0; --waiting: #E5484D; --offline: #8A93A6;
+    --line: #E6DDCF; --muted: #5B6477; --muted-dark: #AEB6C8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { width: 1600px; background: var(--crema); color: var(--ink); font-family: Manrope, "Segoe UI", system-ui, sans-serif; padding: 64px 80px 56px; }
+  header { display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 28px; border-bottom: 2px solid var(--ink); }
+  header img { width: 400px; display: block; }
+  .meta { text-align: right; font-size: 17px; line-height: 1.7; color: var(--muted); }
+  .meta b { color: var(--ink); font-weight: 800; }
+  h2 { font-size: 14px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); margin: 40px 0 16px; }
+  .taglines { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .tag { font-size: 32px; font-weight: 800; line-height: 1.15; letter-spacing: -.01em; }
+  .tag small { display: block; font-size: 12px; font-weight: 800; letter-spacing: .16em; color: var(--muted); margin-bottom: 8px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .panel { position: relative; border-radius: 28px; height: 270px; display: flex; align-items: center; justify-content: center; gap: 44px; }
+  .panel.light { background: #FFFFFF; border: 1.5px solid var(--line); }
+  .panel.crema { background: var(--crema); border: 1.5px solid var(--line); }
+  .panel.dark { background: var(--ink); }
+  .panel .word { width: 460px; }
+  .panel.small { height: 200px; margin-top: 24px; gap: 32px; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .cap { position: absolute; left: 24px; bottom: 16px; font-size: 13px; font-weight: 600; color: var(--muted); }
+  .dark .cap { color: var(--muted-dark); }
+  .colors { display: grid; grid-template-columns: 1.25fr 1fr 1fr; gap: 24px; }
+  .sw { border-radius: 24px; height: 200px; padding: 22px 24px; display: flex; flex-direction: column; justify-content: flex-end; }
+  .sw b { font-size: 26px; font-weight: 800; }
+  .sw code { font-family: "JetBrains Mono", Consolas, monospace; font-size: 18px; font-weight: 700; margin-top: 4px; }
+  .sw span { font-size: 15px; margin-top: 6px; opacity: .85; }
+  .sw.ink { background: var(--ink); color: var(--crema); }
+  .sw.cr { background: var(--crema); color: var(--ink); border: 1.5px solid var(--line); }
+  .sw.sa { background: var(--saffron); color: var(--ink); }
+  .board { margin-top: 24px; background: var(--ink); border-radius: 24px; padding: 22px 24px 20px; }
+  .board .row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+  .t { border-radius: 16px; padding: 14px 16px; color: var(--ink); min-height: 92px; display: flex; flex-direction: column; justify-content: space-between; }
+  .t .n { font-family: "JetBrains Mono", Consolas, monospace; font-size: 22px; font-weight: 700; }
+  .t .s { font-size: 16px; font-weight: 800; }
+  .t .h { font-family: "JetBrains Mono", Consolas, monospace; font-size: 13px; font-weight: 500; opacity: .8; }
+  .t.free { background: var(--free); } .t.seated { background: var(--seated); } .t.waiting { background: var(--waiting); }
+  .t.clear { background: var(--saffron); } .t.off { background: var(--offline); }
+  .board p { color: var(--muted-dark); font-size: 14px; margin-top: 14px; }
+  .type { display: grid; grid-template-columns: 1.3fr 1fr; gap: 24px; }
+  .spec { background: #FFFFFF; border: 1.5px solid var(--line); border-radius: 24px; padding: 26px 28px; }
+  .spec .name { display: flex; justify-content: space-between; align-items: baseline; font-size: 14px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  .spec .big { font-size: 96px; font-weight: 800; line-height: 1; margin: 14px 0 10px; letter-spacing: -.02em; }
+  .spec .line { font-size: 22px; line-height: 1.45; }
+  .spec .line.w4 { font-weight: 400; } .spec .line.w6 { font-weight: 600; } .spec .line.w8 { font-weight: 800; }
+  .mono { font-family: "JetBrains Mono", Consolas, monospace; }
+  .spec.monos .big { font-family: "JetBrains Mono", Consolas, monospace; font-weight: 700; font-size: 84px; }
+  .voice { display: grid; grid-template-columns: 1fr 1.2fr 1.2fr; gap: 24px; }
+  .words { background: var(--ink); color: var(--crema); border-radius: 24px; padding: 28px; display: flex; flex-direction: column; justify-content: center; gap: 6px; }
+  .words div { font-size: 40px; font-weight: 800; letter-spacing: -.01em; }
+  .words div::after { content: "."; color: var(--saffron); }
+  .say { border-radius: 24px; padding: 26px 28px; border: 1.5px solid var(--line); background: #FFFFFF; }
+  .say h3 { font-size: 14px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 14px; }
+  .say.yes h3 { color: var(--free); } .say.no h3 { color: var(--waiting); }
+  .say q { display: block; font-size: 25px; font-weight: 800; line-height: 1.3; quotes: "\201C" "\201D"; }
+  .say .tr { font-size: 16px; color: var(--muted); margin-top: 12px; line-height: 1.5; }
+  .say.no q { font-weight: 600; color: var(--muted); }
+  footer { display: flex; justify-content: space-between; margin-top: 40px; padding-top: 20px; border-top: 2px solid var(--ink); font-size: 15px; color: var(--muted); }
+  footer b { color: var(--ink); }
+</style>
+</head>
+<body>
+  <header>
+    <img src="sallora-logo-light.svg" alt="Sallora">
+    <div class="meta"><b>Brand book v1</b><br>22 November 2026<br>sallora.ai · @sallora.ai</div>
+  </header>
+
+  <h2>Tagline</h2>
+  <div class="taglines">
+    <div class="tag"><small>English</small>Every table, on time.</div>
+    <div class="tag"><small>Shqip</small>Çdo tavolinë, në kohë.</div>
+    <div class="tag"><small>Македонски</small>Секоја маса, навреме.</div>
+  </div>
+
+  <h2>Logo on light and on dark</h2>
+  <div class="grid2">
+    <div class="panel light"><img class="word" src="sallora-logo-light.svg" alt="Sallora logo on light"><span class="cap">sallora-logo-light.svg · on Crema or white</span></div>
+    <div class="panel dark"><img class="word" src="sallora-logo-dark.svg" alt="Sallora logo on dark"><span class="cap">sallora-logo-dark.svg · on Ink</span></div>
+  </div>
+  <div class="grid3">
+    <div class="panel small crema">
+      <img src="sallora-mark.svg" alt="" style="width:104px">
+      <img src="sallora-mark.svg" alt="" style="width:48px">
+      <img src="sallora-mark.svg" alt="" style="width:24px">
+      <span class="cap">sallora-mark.svg · the table and its timer</span>
+    </div>
+    <div class="panel small dark">
+      <img src="sallora-mark-dark.svg" alt="" style="width:104px">
+      <img src="sallora-mark-dark.svg" alt="" style="width:48px">
+      <img src="sallora-mark-dark.svg" alt="" style="width:24px">
+      <span class="cap">sallora-mark-dark.svg · on Ink</span>
+    </div>
+    <div class="panel small light">
+      <img src="sallora-icon.svg" alt="" style="width:120px">
+      <img src="sallora-icon.svg" alt="" style="width:56px">
+      <img src="sallora-icon.svg" alt="" style="width:28px">
+      <span class="cap">sallora-icon.svg · app icon and avatar</span>
+    </div>
+  </div>
+
+  <h2>Colours</h2>
+  <div class="colors">
+    <div class="sw ink"><b>Ink</b><code>#172033</code><span>Text, logo on light, dark surfaces · 15:1 on Crema</span></div>
+    <div class="sw cr"><b>Crema</b><code>#FAF5EC</code><span>Backgrounds, logo on dark</span></div>
+    <div class="sw sa"><b>Saffron</b><code>#F5A524</code><span>The signal: timer arc, one highlight per screen. Never text on light.</span></div>
+  </div>
+  <div class="board">
+    <div class="row">
+      <div class="t free"><span class="n">T01</span><span><span class="s">Free</span><br><span class="h">#22A06B</span></span></div>
+      <div class="t seated"><span class="n">T02 · 02:10</span><span><span class="s">Seated</span><br><span class="h">#4C7DF0</span></span></div>
+      <div class="t waiting"><span class="n">T03 · 05:12</span><span><span class="s">Waiting</span><br><span class="h">#E5484D</span></span></div>
+      <div class="t clear"><span class="n">T04</span><span><span class="s">Needs clearing</span><br><span class="h">#F5A524</span></span></div>
+      <div class="t off"><span class="n">T05</span><span><span class="s">Offline</span><br><span class="h">#8A93A6</span></span></div>
+    </div>
+    <p>Status colours are for the table board only (always on Ink, always with a word), never decoration.</p>
+  </div>
+
+  <h2>Fonts</h2>
+  <div class="type">
+    <div class="spec">
+      <div class="name"><span>Manrope · headings and UI</span><span>400 · 600 · 800</span></div>
+      <div class="big">Aa Ëë Çç Шш</div>
+      <div class="line w8">Every table, on time.</div>
+      <div class="line w6">Tavolina 4 po pret 5 minuta.</div>
+      <div class="line w4">Маса 4 чека 5 минути.</div>
+    </div>
+    <div class="spec monos">
+      <div class="name"><span>JetBrains Mono · timers and numbers</span><span>500 · 700</span></div>
+      <div class="big">05:12</div>
+      <div class="line mono">T04 · seated 02:10</div>
+      <div class="line mono">Busiest 20:00–21:00 · avg stay 41 min</div>
+    </div>
+  </div>
+
+  <h2>Tone of voice</h2>
+  <div class="voice">
+    <div class="words"><div>Calm</div><div>Direct</div><div>Warm</div></div>
+    <div class="say yes">
+      <h3>✓ Sounds like us</h3>
+      <q>Table 4 has waited 5 minutes. Someone go say hi.</q>
+      <div class="tr">Short, kind, useful right now. Talks about tables and guests, never about watching people.</div>
+    </div>
+    <div class="say no">
+      <h3>✗ Does not sound like us</h3>
+      <q>Our AI-powered surveillance platform monitors employee performance in real time.</q>
+      <div class="tr">Cold, full of jargon, and it sounds like spying on staff, which we never do.</div>
+    </div>
+  </div>
+
+  <footer><span><b>Sallora</b> · It watches tables, not people.</span><span>Manrope and JetBrains Mono: Google Fonts, SIL Open Font License</span></footer>
+</body>
+</html>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="256" height="256" role="img" aria-labelledby="title">
+  <title id="title">Sallora mark</title>
+  <!-- The symbol alone, for light backgrounds (favicons on light UI, stamps, stickers). -->
+  <circle cx="32" cy="32" r="22" fill="none" stroke="#172033" stroke-width="8"/>
+  <path d="M32 10A22 22 0 0 1 47.56 47.56" fill="none" stroke="#F5A524" stroke-width="8" stroke-linecap="round"/>
+</svg>
